@@ -2,32 +2,38 @@ export default class GotService {
     constructor() {
         this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
-    
-    async getResource(url) {
+
+    getResource = async (url) => {
         const res = await fetch(`${this._apiBase}${url}`);
-
+    
         if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+          throw new Error(`Could not fetch ${url}` +
+            `, received ${res.status}`);
         }
-
         return await res.json();
-    };
-    getAllCharachters() {
-        return this.getResource('/characters?page=5&pageSize=10');
     }
-    getCharachter(id){
-        return this.getResource(`/characters/${id}`);
 
+    getAllBooks() {
+        return this.getResource(`/books/`);
+    }
+    
+    getBook(id) {
+        return this.getResource(`/books/${id}/`);
+    }
+    
+    getAllCharacters() {
+        return this.getResource(`/characters?page=5&pageSize=10`);
+    }
+    
+    getCharacter (id) {
+        return this.getResource(`/characters/${id}`);
+    }
+    
+    getAllHouses() {
+        return this.getResource(`/houses/`);
+    }
+    
+    getHouse(id) {
+        return this.getResource(`/houses/${id}/`);
     }
 }
-
-const got = new GotService();
-
-got.getAllCharachters()
-    .then(res => {
-        res.forEach(item => console.log(item.name));
-    });
-
-
-got.getCharachter(130)
-    .then(res => console.log(res));
