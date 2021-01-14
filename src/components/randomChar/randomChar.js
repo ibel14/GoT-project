@@ -1,19 +1,32 @@
 import React, {Component} from 'react';
 import './randomChar.css';
+import gotService from '../../services/gotService';
 
 export default class RandomChar extends Component {
 
+    constructor() {
+        super();
+        this.updateChar();
+    }
+
+    gotService = new gotService();
     state = {
-        name: null,
-        gender: null,
-        born: null,
-        died: null,
-        culture: null
+        char: {}
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({char})
+    }
+
+    updateChar() {
+        const id = Math.floor(Math.random()*140 + 25);
+        this.gotService.getCharacter(id)
+            .then(this.onCharLoaded);
     }
 
     render() {
 
-        const {name, gender, born, died, culture} = this.state;
+        const { char: {name, gender, born, died, culture} } = this.state;
 
         return (
             <div className="random-block rounded">
