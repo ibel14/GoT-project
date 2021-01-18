@@ -3,28 +3,34 @@ import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
-import ErrorMessage from '../error';
-import PersonDetails from '../personDetails';
+import CharDetails from '../charDetails';
 
 import './app.css';
 
 export default class App extends Component {
+
     state = {
         showRandomChar: true,
-        error: false
+        selectedChar: 130
     }
+
     toggleRandomChar = () => {
         this.setState((state) => {
             return {
                 showRandomChar: !state.showRandomChar
             }
         });
+    };
+
+    onCharSeleceted = (id) => {
+        this.setState({
+            selectedChar: id
+        })
     }
+
     render() {
-        if (this.state.error) {
-            return <ErrorMessage/>
-        }
         const char = this.state.showRandomChar ? <RandomChar/> : null;
+        
         return (
             <> 
                 <Container>
@@ -41,10 +47,10 @@ export default class App extends Component {
                     </Row>
                     <Row>
                         <Col md='6'>
-                            <ItemList />
+                            <ItemList onCharSeleceted={this.onCharSeleceted} />
                         </Col>
                         <Col md='6'>
-                            <PersonDetails />
+                            <CharDetails charId={this.state.selectedChar} />
                         </Col>
                     </Row>
                 </Container>
