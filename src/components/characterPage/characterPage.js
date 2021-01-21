@@ -4,6 +4,7 @@ import ItemList from '../itemList';
 import CharDetails from '../charDetails';
 import ErrorMessage from '../error/errorMessage';
 import gotService from '../../services/gotService';
+import RowBlock from '../rowBlock';
 
 
 export default class CharacterPage extends Component {
@@ -31,16 +32,21 @@ export default class CharacterPage extends Component {
         if (this.state.error) {
             return <ErrorMessage/>
         }
+
+        const itemList = (
+                <ItemList 
+                    onCharSeleceted={this.onCharSeleceted} 
+                    getData={this.gotService.getAllCharacters}
+                    renderItem={({name, gender}) => `${name} (${gender})`}/>
+        )
+
+        const charDetails = (
+                <CharDetails 
+                charId={this.state.selectedChar} />
+        )
+
         return (
-            <Row>
-                <Col md='6'>
-                    <ItemList onCharSeleceted={this.onCharSeleceted} 
-                    getData={this.gotService.getAllCharacters}/>
-                </Col>
-                <Col md='6'>
-                    <CharDetails charId={this.state.selectedChar} />
-                </Col>
-            </Row>
+            <RowBlock left={itemList} right={charDetails}/>
         )
     }
 }
